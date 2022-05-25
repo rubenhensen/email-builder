@@ -1,8 +1,12 @@
+<svelte:head>
+    <script src="//cdn.quilljs.com/1.3.6/quill.min.js" on:load={initQuill}></script>
+    <!-- <link href="//cdn.quilljs.com/1.3.6/quill.snow.css" rel="stylesheet"> -->
+</svelte:head>
+
 <script>
 	import { onMount } from 'svelte';
 
 	let editor;
-    let quill;
 
 	export let toolbarOptions = [
 		[{ header: 1 }, { header: 2 }, 'blockquote', 'link', 'image'],
@@ -12,21 +16,21 @@
 		['clean']
 	];
 
-	onMount(async () => {
-		const { default: Quill } = await import('quill');
-
-		quill = new Quill(editor, {
+	const initQuill = () => {
+		let quill = new Quill(editor, {
 			modules: {
 				toolbar: toolbarOptions
 			},
 			theme: 'snow',
 			placeholder: 'Write your story...'
 		});
-
+        
         quill.on('text-change', function(delta, oldDelta, source) {
             html = quill.root.innerHTML;
         });
-	});
+	}
+
+
 
     function showContent() {
         console.log(html)
