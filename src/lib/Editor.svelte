@@ -32,7 +32,7 @@
 
 </script>
 
-<div class="editor" id="editor">
+<div class="editor">
 </div>
 
 <!-- <button on:click={showContent}>print content</button> -->
