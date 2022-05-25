@@ -55,7 +55,7 @@
 	<br />
 	<label for="msg">Bericht:</label>
 	<!-- <textarea id="msg" name="message" aria-label="Add message body" bind:value={body}/> -->
-	<Editor></Editor>
+	<Editor bind:content={body}></Editor>
 {/each}
 <button on:click={addMessage}>+</button>
 <button on:click={removeMessage}>-</button>
