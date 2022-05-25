@@ -5,6 +5,8 @@
 	import type { Message } from '$lib/Message'
 	import type { Date } from '$lib/Date'
 	import { generateHTML } from '$lib/generateHTML'
+	import Editor from '$lib/Editor.svelte'
+
 	function addMessage(): void {
 		messages = [...messages, {title: "", body: ""}]
 	}
@@ -34,46 +36,26 @@
 <!-- <h1>Ruben's basic email builder omdat hij het helemaal beu is alles met de hand te doen app</h1> -->
 <h2>Dates:</h2>
 {#each dates as { date, event }, i}
-<form
-	class="new"
-	action="/generate"
-	method="post"
-	use:enhance={{
-		result: async ({ form }) => {
-			form.reset();
-		}
-	}}
->
 	<!-- <input name="text" aria-label="Add todo" placeholder="+ tap to add a todo" /> -->
 	<!-- <label for="date">Date:</label> -->
 	<input type="text" id="date" name="date" aria-label="Add date" bind:value={date} placeholder="zaterdag 12 mei"/>
-	
+
 	<!-- <label for="event">Bericht:</label> -->
 	<input type="text" id="event" name="event" aria-label="Add event" bind:value={event} placeholder="Gewoon draaien"/>
-</form>
 {/each}
 <button on:click={addDate}>+</button>
 <button on:click={removeDate}>-</button>
 
 <h2>Messages</h2>
 {#each messages as { title, body }, i}
-<form
-	class="new"
-	action="/generate"
-	method="post"
-	use:enhance={{
-		result: async ({ form }) => {
-			form.reset();
-		}
-	}}
->
+
 	<!-- <input name="text" aria-label="Add todo" placeholder="+ tap to add a todo" /> -->
 	<label for="title">Titel:</label>
 	<input type="text" id="title" name="message_title" aria-label="Add title" bind:value={title}/>
 	<br />
 	<label for="msg">Bericht:</label>
-	<textarea id="msg" name="message" aria-label="Add message body" bind:value={body}/>
-</form>
+	<!-- <textarea id="msg" name="message" aria-label="Add message body" bind:value={body}/> -->
+	<Editor bind:html={body}></Editor>
 {/each}
 <button on:click={addMessage}>+</button>
 <button on:click={removeMessage}>-</button>
