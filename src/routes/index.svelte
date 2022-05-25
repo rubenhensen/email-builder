@@ -1,61 +1,95 @@
 <script lang="ts">
 	import { enhance } from '$lib/form';
-	import { scale } from 'svelte/transition';
-	import { flip } from 'svelte/animate';
+	// import { scale } from 'svelte/transition';
+	// import { flip } from 'svelte/animate';
+	import type { Message } from '$lib/Message'
+	import type { Date } from '$lib/Date'
+	import { generateHTML } from '$lib/generateHTML'
+	function addMessage(): void {
+		messages = [...messages, {title: "", body: ""}]
+	}
 
-	type Message = {
-		title: string;
-		body: string;
+	function removeMessage(): void {
+		messages = messages.slice(0, -1)
+	}
+
+	function addDate(): void {
+		dates = [...dates, {date: "", event: ""}]
+	}
+
+	function removeDate(): void {
+		dates = dates.slice(0, -1)
+	}
+
+	// Don't know how to call a function with arguments from html
+	function genHTML(): void {
+		generateHTML(messages, dates)
 	}
 
 
-	// type Todo = {
-	// 	uid: string;
-	// 	created_at: Date;
-	// 	text: string;
-	// 	done: boolean;
-	// 	pending_delete: boolean;
-	// };
-
-	export let messages: Message[];
-
-	// export let todos: Todo[];
+	export let messages: Message[] = [{title: "", body: ""}];
+	export let dates: Date[] = [{date:"", event: ""}]
 </script>
 
-<h1>Ruben's basic email builder omdat hij het helemaal beu is alles met de hand te doen app</h1>
-
+<!-- <h1>Ruben's basic email builder omdat hij het helemaal beu is alles met de hand te doen app</h1> -->
+<h2>Dates:</h2>
+{#each dates as { date, event }, i}
 <form
-		class="new"
-		action="/generate"
-		method="post"
-		use:enhance={{
-			result: async ({ form }) => {
-				form.reset();
-			}
-		}}
-	>
-		<!-- <input name="text" aria-label="Add todo" placeholder="+ tap to add a todo" /> -->
-		<label for="title">Titel:</label>
-       	<input type="text" id="title" name="message_title">
-		   <br/>
-		<label for="msg">Bericht:</label>
-        <textarea id="msg" name="message"></textarea>
-	</form>
+	class="new"
+	action="/generate"
+	method="post"
+	use:enhance={{
+		result: async ({ form }) => {
+			form.reset();
+		}
+	}}
+>
+	<!-- <input name="text" aria-label="Add todo" placeholder="+ tap to add a todo" /> -->
+	<!-- <label for="date">Date:</label> -->
+	<input type="text" id="date" name="date" aria-label="Add date" bind:value={date} placeholder="zaterdag 12 mei"/>
+	
+	<!-- <label for="event">Bericht:</label> -->
+	<input type="text" id="event" name="event" aria-label="Add event" bind:value={event} placeholder="Gewoon draaien"/>
+</form>
+{/each}
+<button on:click={addDate}>+</button>
+<button on:click={removeDate}>-</button>
 
-<!-- <form action="/my-handling-form-page" method="post">
-    <ul>
-     <li>
-       <label for="name">Name:</label>
-       <input type="text" id="name" name="user_name">
-     </li>
-     <li>
-       <label for="mail">E-mail:</label>
-       <input type="email" id="mail" name="user_email">
-     </li>
-     <li>
-       <label for="msg">Message:</label>
-       <textarea id="msg" name="user_message"></textarea>
-     </li>
-    </ul>
-   </form>
-    -->
+<h2>Messages</h2>
+{#each messages as { title, body }, i}
+<form
+	class="new"
+	action="/generate"
+	method="post"
+	use:enhance={{
+		result: async ({ form }) => {
+			form.reset();
+		}
+	}}
+>
+	<!-- <input name="text" aria-label="Add todo" placeholder="+ tap to add a todo" /> -->
+	<label for="title">Titel:</label>
+	<input type="text" id="title" name="message_title" aria-label="Add title" bind:value={title}/>
+	<br />
+	<label for="msg">Bericht:</label>
+	<textarea id="msg" name="message" aria-label="Add message body" bind:value={body}/>
+</form>
+{/each}
+<button on:click={addMessage}>+</button>
+<button on:click={removeMessage}>-</button>
+<button on:click={genHTML}>generate</button>
+
+<svelte:head>  
+	<!-- Mobile Specific Metas
+	–––––––––––––––––––––––––––––––––––––––––––––––––– -->
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+  
+	<!-- FONT
+	–––––––––––––––––––––––––––––––––––––––––––––––––– -->
+	<link href="//fonts.googleapis.com/css?family=Raleway:400,300,600" rel="stylesheet" type="text/css">
+  
+	<!-- CSS
+	–––––––––––––––––––––––––––––––––––––––––––––––––– -->
+	<link rel="stylesheet" href="css/normalize.css">
+	<link rel="stylesheet" href="css/skeleton.css">
+</svelte:head>
