@@ -4,10 +4,6 @@
 </svelte:head>
 
 <script>
-	import { onMount } from 'svelte';
-
-	let editor;
-
 	export let toolbarOptions = [
 		[{ header: 1 }, { header: 2 }, 'blockquote', 'link', 'image'],
 		['bold', 'italic', 'underline', 'strike'],
@@ -16,21 +12,17 @@
 		['clean']
 	];
 
-	const initQuill = () => {
-		let quill = new Quill(editor, {
+    let options = {
 			modules: {
 				toolbar: toolbarOptions
 			},
 			theme: 'snow',
 			placeholder: 'Write your story...'
-		});
-        
-        quill.on('text-change', function(delta, oldDelta, source) {
-            html = quill.root.innerHTML;
-        });
+		};
+
+	const initQuill = () => {
+        editor = new Quill('.editor', options); 
 	}
-
-
 
     function showContent() {
         console.log(html)
@@ -40,8 +32,7 @@
 
 </script>
 
-<div class="editor-wrapper">
-	<div bind:this={editor}/>
+<div class="editor" id="editor">
 </div>
 
 <!-- <button on:click={showContent}>print content</button> -->
