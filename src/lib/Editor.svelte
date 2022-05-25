@@ -21,7 +21,7 @@
 		};
 
 	const initQuill = () => {
-        editor = new Quill('.editor', options); 
+        let editor = new Quill('.editor', options); 
 	}
 
     function showContent() {
