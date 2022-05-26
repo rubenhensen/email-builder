@@ -42,6 +42,7 @@
 
 	<!-- <label for="event">Bericht:</label> -->
 	<input type="text" id="event" name="event" aria-label="Add event" bind:value={event} placeholder="Gewoon draaien"/>
+	<br/>
 {/each}
 <button on:click={addDate}>+</button>
 <button on:click={removeDate}>-</button>
